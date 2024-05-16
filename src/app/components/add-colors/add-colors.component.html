@@ -1,0 +1,22 @@
+<p>add-colors works!</p>
+
+<button (click)="undo()">Undo</button>
+<button (click)="redo()">Redo</button>
+<!-- <div *ngFor="let color of colors">
+  {{ color }}
+</div> -->
+
+<div>
+  <input type="text" placeholder="Source" [(ngModel)]="newColor.source" />
+  <button (click)="addColor()">Add Color</button>
+</div>
+
+<div>
+  <h2>Colors</h2>
+  <ul>
+    <li *ngFor="let color of colors">
+      {{ color.name }} ({{ color.hex }}, {{ color.rgb }}, {{ color.source }},
+      {{ color.alpha }})
+    </li>
+  </ul>
+</div>
