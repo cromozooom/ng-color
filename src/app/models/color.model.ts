@@ -1,21 +1,28 @@
-export class Color {
-  name: string;
-  source: string;
-  hex: string;
-  rgb: string;
-  alpha: number;
+import { v4 as uuid4 } from 'uuid';
 
-  constructor(
-    name: string,
-    source: string,
-    hex: string,
-    rgb: string,
-    alpha: number
-  ) {
-    this.name = name;
+export enum ColorSpace {
+  hsl = 'hsl',
+  lch = 'lch',
+  oklch = 'oklch',
+  lab = 'lab',
+  p3 = 'p3',
+}
+export enum GamutType {
+  sRGB = 'sRGB',
+  unlimited = 'Unlimited colors',
+}
+export class Color {
+  source: string;
+  name: string;
+  gamut: GamutType;
+  space: ColorSpace;
+  id: string;
+
+  constructor(source: string, name: string) {
     this.source = source;
-    this.hex = hex;
-    this.rgb = rgb;
-    this.alpha = alpha;
+    this.name = name;
+    this.gamut = GamutType.sRGB;
+    this.space = ColorSpace.oklch;
+    this.id = uuid4();
   }
 }

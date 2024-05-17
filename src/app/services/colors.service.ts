@@ -1,55 +1,60 @@
 import { Injectable } from '@angular/core';
-import { Color } from '../models/color.model';
+import { Color, GamutType, ColorSpace } from '../models/color.model';
 import { LocalStorageService } from './local-storage.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ColorsService {
   private _colors: Color[] = [];
+  private _gamut: GamutType = GamutType.sRGB;
+  private _colorSpace: ColorSpace = ColorSpace.oklch;
 
   constructor(private localStorageService: LocalStorageService) {
-    this.colors = this.localStorageService
-      .getColors()
-      .map(
-        (colorData) =>
-          new Color(
-            colorData.name,
-            colorData.hex,
-            colorData.rgb,
-            colorData.source,
-            colorData.alpha
-          )
-      );
+    const colorsData = this.localStorageService.getColors();
+    const gamutData = this.localStorageService.getGamut();
+    const colorSpaceData = this.localStorageService.getColorSpace();
+
+    this._gamut = gamutData;
+    this._colorSpace = colorSpaceData;
+    this._colors = colorsData.map(
+      (colorData) => new Color(colorData.source, colorData.name)
+    );
   }
 
+  get gamut(): GamutType {
+    return this._gamut;
+  }
+  get colorSpace(): ColorSpace {
+    return this._colorSpace;
+  }
   get colors(): Color[] {
     return this._colors;
   }
+  set colors(newColors: Color[]) {
+    this._colors = newColors;
+  }
 
   addColor(color: Color): void {
-    this.colors.push(color);
+    color.id = uuidv4();
+    this._colors.push(color);
     this.saveColors();
   }
 
   saveColors(): void {
     const colorData = this.colors.map((color) => ({
-      name: color.name,
-      hex: color.hex,
-      rgb: color.rgb,
       source: color.source,
-      alpha: color.alpha,
+      name: color.name,
+      gamut: color.gamut,
+      space: color.space,
+      id: uuidv4(),
     }));
     this.localStorageService.setColors(colorData);
   }
 
-  set colors(newColors: Color[]) {
-    this._colors = newColors;
-  }
-
   removeColor(index: number) {
     this._colors.splice(index, 1);
+    this.saveColors();
   }
-
-  // Add more methods as needed to modify the colors array
 }

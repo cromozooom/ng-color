@@ -1,22 +1,31 @@
-<p>add-colors works!</p>
-
 <button (click)="undo()">Undo</button>
 <button (click)="redo()">Redo</button>
 <!-- <div *ngFor="let color of colors">
   {{ color }}
 </div> -->
 
-<div>
+<span>{{ currentColorSpace | json }}</span>
+<span>{{ currentGamut | json }}</span>
+
+<div class="flex flex-col gap-2">
   <input type="text" placeholder="Source" [(ngModel)]="newColor.source" />
   <button (click)="addColor()">Add Color</button>
 </div>
 
-<div>
+<div *ngIf="colors.length > 0">
   <h2>Colors</h2>
   <ul>
-    <li *ngFor="let color of colors">
-      {{ color.name }} ({{ color.hex }}, {{ color.rgb }}, {{ color.source }},
-      {{ color.alpha }})
+    <li
+      *ngFor="let color of colors; let i = index"
+      class="flex justify-between"
+    >
+      <div class="tex-black">
+        {{ i }}
+        {{ color.source }}
+      </div>
+      <button (click)="removeColor(i)" class="text-black border rounded">
+        <div class="aspect-square w-4">x</div>
+      </button>
     </li>
   </ul>
 </div>
