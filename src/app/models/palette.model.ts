@@ -1,6 +1,6 @@
 import { v4 as uuid4 } from 'uuid';
 
-export enum ColorSpace {
+export enum PaletteSpace {
   hsl = 'hsl',
   lch = 'lch',
   oklch = 'oklch',
@@ -9,20 +9,20 @@ export enum ColorSpace {
 }
 export enum GamutType {
   sRGB = 'sRGB',
-  unlimited = 'Unlimited colors',
+  unlimited = 'Unlimited palettes',
 }
-export class Color {
+export class Palette {
   source: string;
   name: string;
   gamut: GamutType;
-  space: ColorSpace;
+  space: PaletteSpace;
   id: string;
 
   constructor(source: string, name: string) {
     this.source = source;
     this.name = name;
     this.gamut = GamutType.sRGB;
-    this.space = ColorSpace.oklch;
+    this.space = PaletteSpace.oklch;
     this.id = uuid4();
   }
 }

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Color, GamutType, ColorSpace } from '../models/color.model';
+import { Palette, GamutType, PaletteSpace } from '../models/palette.model';
 @Injectable({
   providedIn: 'root',
 })
 export class LocalStorageService {
-  private storageKey = 'colors';
+  private storageKey = 'palettes';
   private isLocalStorageAvailable: boolean;
 
   constructor() {
@@ -19,24 +19,26 @@ export class LocalStorageService {
     }
     return GamutType.sRGB;
   }
-  getColorSpace(): ColorSpace {
+  getPaletteSpace(): PaletteSpace {
     if (this.isLocalStorageAvailable) {
-      const colorSpaceJson = window.localStorage.getItem(this.storageKey);
-      return colorSpaceJson ? JSON.parse(colorSpaceJson) : ColorSpace.oklch;
+      const paletteSpaceJson = window.localStorage.getItem(this.storageKey);
+      return paletteSpaceJson
+        ? JSON.parse(paletteSpaceJson)
+        : PaletteSpace.oklch;
     }
-    return ColorSpace.oklch;
+    return PaletteSpace.oklch;
   }
-  getColors(): Color[] {
+  getPalettes(): Palette[] {
     if (this.isLocalStorageAvailable) {
-      const colorsJson = window.localStorage.getItem(this.storageKey);
-      return colorsJson ? JSON.parse(colorsJson) : [];
+      const palettesJson = window.localStorage.getItem(this.storageKey);
+      return palettesJson ? JSON.parse(palettesJson) : [];
     }
     return [];
   }
 
-  setColors(colors: Color[]): void {
+  setPalettes(palettes: Palette[]): void {
     if (this.isLocalStorageAvailable) {
-      window.localStorage.setItem(this.storageKey, JSON.stringify(colors));
+      window.localStorage.setItem(this.storageKey, JSON.stringify(palettes));
     }
   }
   setGamut(gamut: GamutType): void {
@@ -44,9 +46,9 @@ export class LocalStorageService {
       window.localStorage.setItem(this.storageKey, gamut);
     }
   }
-  setColorSpace(colorSpace: ColorSpace): void {
+  setPaletteSpace(paletteSpace: PaletteSpace): void {
     if (this.isLocalStorageAvailable) {
-      window.localStorage.setItem(this.storageKey, colorSpace);
+      window.localStorage.setItem(this.storageKey, paletteSpace);
     }
   }
 }
