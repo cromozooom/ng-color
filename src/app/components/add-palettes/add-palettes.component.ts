@@ -60,6 +60,7 @@ export class AddPalettesComponent {
   }
 
   addPalette() {
+    console.log(this.newPalette.source);
     if (this.newPalette.source) {
       this.newPalette.gamut = this._gamut; // Call getGamut() method on the current instance
       this.newPalette.space = this._space; // Call getGamut() method on the current instance
