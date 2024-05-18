@@ -3,10 +3,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
-import { AddColorsComponent } from './components/add-colors/add-colors.component';
+import { AddPalettesComponent } from './components/add-palettes/add-palettes.component';
 
 @NgModule({
-  declarations: [AppComponent, AddColorsComponent],
+  declarations: [AppComponent, AddPalettesComponent],
   imports: [
     BrowserModule,
     FormsModule,

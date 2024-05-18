@@ -1,16 +1,23 @@
 import { Injectable } from '@angular/core';
-import { Color, ColorSpace, GamutType } from '../models/color.model';
+import { Palette, PaletteSpace, GamutType } from '../models/palette.model';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ColorStateService {
-  private states: { colors: Color[]; gamut: GamutType; space: ColorSpace }[] =
-    [];
+export class PaletteStateService {
+  private states: {
+    palettes: Palette[];
+    gamut: GamutType;
+    space: PaletteSpace;
+  }[] = [];
   private currentIndex = -1; // Index of the current state
   private maxUndoSteps = 10; // Maximum number of undo steps allowed
 
-  saveState(state: { colors: Color[]; gamut: GamutType; space: ColorSpace }) {
+  saveState(state: {
+    palettes: Palette[];
+    gamut: GamutType;
+    space: PaletteSpace;
+  }) {
     // Truncate the states array if we've gone past the maximum undo steps
     if (this.currentIndex + 1 >= this.maxUndoSteps) {
       this.states = this.states.slice(-this.maxUndoSteps + 1);
@@ -22,10 +29,10 @@ export class ColorStateService {
 
     // Add the new state
     this.states.push({
-      colors: [...state.colors],
+      palettes: [...state.palettes],
       gamut: state.gamut,
       space: state.space,
-    }); // Spread colors array and assign gamut
+    }); // Spread palettes array and assign gamut
     this.currentIndex++;
   }
 
