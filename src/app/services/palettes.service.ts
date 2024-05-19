@@ -8,15 +8,18 @@ import { v4 as uuidv4 } from 'uuid';
 })
 export class PalettesService {
   private _palettes: Palette[] = [];
+  private _stepper: number = 12;
   private _gamut: GamutType = GamutType.sRGB;
   private _paletteSpace: PaletteSpace = PaletteSpace.oklch;
 
   constructor(private localStorageService: LocalStorageService) {
     const palettesData = this.localStorageService.getPalettes();
+    const stepperData = this.localStorageService.getStepper();
     const gamutData = this.localStorageService.getGamut();
     const paletteSpaceData = this.localStorageService.getPaletteSpace();
 
     this._gamut = gamutData;
+    this._stepper = stepperData;
     this._paletteSpace = paletteSpaceData;
     this._palettes = palettesData.map(
       (paletteData) => new Palette(paletteData.source, paletteData.name)
@@ -28,6 +31,9 @@ export class PalettesService {
   }
   get paletteSpace(): PaletteSpace {
     return this._paletteSpace;
+  }
+  get stepper(): number {
+    return this._stepper;
   }
   get palettes(): Palette[] {
     return this._palettes;
@@ -48,6 +54,7 @@ export class PalettesService {
       name: palette.name,
       gamut: palette.gamut,
       space: palette.space,
+      stepper: palette.stepper,
       id: uuidv4(),
     }));
     this.localStorageService.setPalettes(paletteData);

@@ -4,6 +4,7 @@ import { Palette, GamutType, PaletteSpace } from '../models/palette.model';
   providedIn: 'root',
 })
 export class LocalStorageService {
+  private stepperStorageKey = 'stepper';
   private gamutStorageKey = 'gamut';
   private palettesStorageKey = 'palettes';
   private colorSpaceStorageKey = 'colorSpace';
@@ -13,6 +14,13 @@ export class LocalStorageService {
   constructor() {
     this.isLocalStorageAvailable =
       typeof window !== 'undefined' && !!window.localStorage;
+
+    if (
+      this.isLocalStorageAvailable &&
+      !window.localStorage.getItem(this.stepperStorageKey)
+    ) {
+      this.setStepper(12); // Initialize with a default value
+    }
 
     if (
       this.isLocalStorageAvailable &&
@@ -34,6 +42,14 @@ export class LocalStorageService {
       return gamutJson ? JSON.parse(gamutJson) : GamutType.sRGB;
     }
     return GamutType.sRGB;
+  }
+
+  getStepper(): number {
+    if (this.isLocalStorageAvailable) {
+      const stepper = window.localStorage.getItem(this.stepperStorageKey);
+      return stepper ? parseInt(stepper, 10) : 12; // Parse string to number or return default value
+    }
+    return 12; // Return default value if local storage is not available
   }
 
   getPaletteSpace(): PaletteSpace {
@@ -58,6 +74,14 @@ export class LocalStorageService {
   setGamut(gamut: GamutType): void {
     if (this.isLocalStorageAvailable) {
       window.localStorage.setItem(this.gamutStorageKey, JSON.stringify(gamut));
+    }
+  }
+  setStepper(stepper: number): void {
+    if (this.isLocalStorageAvailable) {
+      window.localStorage.setItem(
+        this.stepperStorageKey,
+        JSON.stringify(stepper)
+      );
     }
   }
 

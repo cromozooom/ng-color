@@ -11,11 +11,13 @@ export enum GamutType {
   sRGB = 'sRGB',
   unlimited = 'Unlimited palettes',
 }
+
 export class Palette {
   source: string;
   name: string;
   gamut: GamutType;
   space: PaletteSpace;
+  stepper: number;
   id: string;
 
   constructor(source: string, name: string) {
@@ -23,6 +25,7 @@ export class Palette {
     this.name = name;
     this.gamut = GamutType.sRGB;
     this.space = PaletteSpace.oklch;
+    this.stepper = Number(12);
     this.id = uuid4();
   }
 }

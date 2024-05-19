@@ -13,18 +13,21 @@ import { CommonModule } from '@angular/common';
 })
 export class AddPalettesComponent {
   newPalette: Palette = new Palette('', '');
+  currentStepper: number; // Initialize a new Palette object
   currentPaletteSpace: PaletteSpace; // Initialize a new Palette object
   currentGamut: GamutType; // Initialize a new Palette object
 
   private _palettes: Palette[] = [];
   private _gamut: GamutType;
   private _space: PaletteSpace;
+  private _stepper: number;
 
   constructor(
     private palettesService: PalettesService,
     private paletteStateService: PaletteStateService
   ) {
     this._palettes = this.palettesService.palettes;
+    this._stepper = this.palettesService.stepper;
     this._gamut = this.palettesService.gamut;
     this._space = this.palettesService.paletteSpace;
     this.paletteStateService.saveState({
@@ -33,6 +36,7 @@ export class AddPalettesComponent {
       space: this._space,
     });
 
+    this.currentStepper = this._stepper;
     this.currentPaletteSpace = this._space;
     this.currentGamut = this._gamut;
   }
