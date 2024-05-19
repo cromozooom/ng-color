@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Palette, GamutType, PaletteSpace } from '../models/palette.model';
 import { LocalStorageService } from './local-storage.service';
-import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
   providedIn: 'root',
@@ -43,7 +42,6 @@ export class PalettesService {
   }
 
   addPalette(palette: Palette): void {
-    palette.id = uuidv4();
     this._palettes.push(palette);
     this.savePalettes();
   }
@@ -55,7 +53,7 @@ export class PalettesService {
       gamut: palette.gamut,
       space: palette.space,
       stepper: palette.stepper,
-      id: uuidv4(),
+      id: palette.id,
     }));
     this.localStorageService.setPalettes(paletteData);
   }
