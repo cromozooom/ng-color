@@ -5,6 +5,7 @@ import { Palette, GamutType, PaletteSpace } from '../models/palette.model';
 })
 export class LocalStorageService {
   private stepperStorageKey = 'stepper';
+  private paletteIdStorageKey = 'id';
   private gamutStorageKey = 'gamut';
   private palettesStorageKey = 'palettes';
   private colorSpaceStorageKey = 'colorSpace';
@@ -69,6 +70,12 @@ export class LocalStorageService {
       return palettesJson ? JSON.parse(palettesJson) : [];
     }
     return [];
+  }
+
+  setPaletteId(paletteId: string): void {
+    if (this.isLocalStorageAvailable) {
+      window.localStorage.setItem(this.paletteIdStorageKey, paletteId);
+    }
   }
 
   setGamut(gamut: GamutType): void {

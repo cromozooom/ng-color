@@ -1,4 +1,4 @@
-import { v4 as uuid4 } from 'uuid';
+import Color from 'colorjs.io';
 
 export enum PaletteSpace {
   hsl = 'hsl',
@@ -18,14 +18,24 @@ export class Palette {
   gamut: GamutType;
   space: PaletteSpace;
   stepper: number;
+  shades: Array<Color>;
   id: string;
 
-  constructor(source: string, name: string) {
+  constructor(
+    source: string,
+    name: string,
+    gamut: GamutType,
+    space: PaletteSpace,
+    stepper: number,
+    shades: Array<Color>,
+    id: string
+  ) {
     this.source = source;
     this.name = name;
-    this.gamut = GamutType.sRGB;
-    this.space = PaletteSpace.oklch;
-    this.stepper = Number(12);
-    this.id = uuid4();
+    this.gamut = gamut;
+    this.space = space;
+    this.stepper = stepper;
+    this.shades = shades;
+    this.id = id;
   }
 }

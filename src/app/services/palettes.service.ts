@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Palette, GamutType, PaletteSpace } from '../models/palette.model';
 import { LocalStorageService } from './local-storage.service';
+import Color from 'colorjs.io';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +22,16 @@ export class PalettesService {
     this._stepper = stepperData;
     this._paletteSpace = paletteSpaceData;
     this._palettes = palettesData.map(
-      (paletteData) => new Palette(paletteData.source, paletteData.name)
+      (paletteData) =>
+        new Palette(
+          paletteData.source,
+          paletteData.name,
+          paletteData.gamut,
+          paletteData.space,
+          paletteData.stepper,
+          paletteData.shades,
+          paletteData.id
+        )
     );
   }
 
@@ -43,6 +53,7 @@ export class PalettesService {
 
   addPalette(palette: Palette): void {
     this._palettes.push(palette);
+    console.log(this._palettes);
     this.savePalettes();
   }
 
@@ -53,13 +64,34 @@ export class PalettesService {
       gamut: palette.gamut,
       space: palette.space,
       stepper: palette.stepper,
+      shades: palette.shades,
       id: palette.id,
     }));
+
     this.localStorageService.setPalettes(paletteData);
   }
 
   removePalette(index: number) {
     this._palettes.splice(index, 1);
     this.savePalettes();
+  }
+
+  generateStepper(
+    source: string,
+    stepper: number,
+    paletteSpace: PaletteSpace,
+    gamut: GamutType
+  ): Color[] {
+    const baseColor = new Color(source).to(paletteSpace).to('oklch');
+    const shades: Color[] = [];
+    const stepSize = (0.999 - 0.2) / (stepper - 1);
+
+    for (let i = 0; i < stepper; i++) {
+      const lightness = 0.999 - i * stepSize;
+      const shade = baseColor.clone().set('l', lightness);
+      const shadeLCH = shade;
+      shades.push(shadeLCH);
+    }
+    return shades;
   }
 }

@@ -9,24 +9,88 @@
 <span>{{ currentStepper }}</span>
 
 <div class="flex flex-col gap-2">
-  <input type="text" placeholder="Source" [(ngModel)]="newPalette.source" />
+  <input type="text" placeholder="Source" [(ngModel)]="source" />
   <button (click)="addPalette()">Add Color</button>
 </div>
 
-<div *ngIf="palettes.length > 0">
-  <h2>Colors</h2>
-  <ul>
-    <li
-      *ngFor="let color of palettes; let i = index"
-      class="flex justify-between"
-    >
-      <div class="tex-black">
-        {{ i }}
-        {{ color.source }}
-      </div>
-      <button (click)="removePalette(i)" class="text-black border rounded">
-        <div class="aspect-square w-4">x</div>
-      </button>
-    </li>
-  </ul>
+<div class="flex">
+  <div *ngIf="palettes.length > 0">
+    <h2>Colors</h2>
+    <ul>
+      <li
+        *ngFor="let color of palettes; let i = index"
+        class="flex justify-between"
+      >
+        <div class="tex-black d-flex flex-col">
+          <div class="flex justify-between">
+            <div>
+              {{ i }}
+              {{ color.source }}
+            </div>
+            <button
+              (click)="removePalette(i)"
+              class="text-black border rounded"
+            >
+              <div class="aspect-square w-4">x</div>
+            </button>
+          </div>
+          <div class="flex">
+            <div
+              class="aspect-square w-6"
+              *ngFor="let shade of color.shades"
+              [ngStyle]="getColorStyle(shade)"
+            ></div>
+
+            <!-- <ng-container *ngFor="let shade of color.shades">
+              {{ shade.coords }}
+            </ng-container> -->
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div>
+    <h2>Edit</h2>
+    <ul>
+      <li
+        *ngFor="let color of palettes; let i = index"
+        class="flex justify-between"
+      >
+        <div class="tex-black d-flex flex-col">
+          <div class="flex justify-between">
+            <div>
+              {{ i }}
+              {{ color.source }}
+            </div>
+            <button
+              (click)="removePalette(i)"
+              class="text-black border rounded"
+            >
+              <div class="aspect-square w-4">x</div>
+            </button>
+          </div>
+          <div class="flex flex-col">
+            <div
+              class="flex gap-2 pb-2"
+              *ngFor="let shade of color.shades; let j = index"
+            >
+              <div class="" *ngFor="let coord of [0, 1, 2]; let k = index">
+                <input
+                  type="number"
+                  step="0.001"
+                  class="border"
+                  [(ngModel)]="shade.coords[coord]"
+                  (change)="updateShade(color, j)"
+                />
+              </div>
+            </div>
+
+            <!-- <ng-container *ngFor="let shade of color.shades">
+              {{ shade.coords }}
+            </ng-container> -->
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
 </div>
